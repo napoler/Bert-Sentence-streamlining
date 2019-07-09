@@ -195,20 +195,26 @@ class TerryProcessor(DataProcessor):
 
     def get_labels(self):
         """ 分类列表."""
-        return ["0", "1"]
+        return ["No", "Yes"]
 
     def _create_examples(self, datafile, set_type):
         """Creates examples for the training and dev sets."""
         examples = []
 
         with open(datafile,'r') as load_f:
-            load_dict = json.load(load_f)
-            for (i, line) in enumerate(load_dict):
+            lines = load_f.readlines()#读取全部内容  
+            for (i, line) in enumerate(lines):
+                # print(line)
+                line= json.loads(line)
+                # print(line)
+            # load_dict = json.load(load_f)
+            # for (i, line) in enumerate(load_dict):
                 guid = "%s-%s" % (set_type, i)
-                text_a = line['sentence']
+                text_a = line['sentence1']
+                text_b = line['sentence2']
                 label = line['label']
                 examples.append(
-                    InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+                    InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
 
         # for (i, line) in enumerate(lines):
         #     guid = "%s-%s" % (set_type, i)
